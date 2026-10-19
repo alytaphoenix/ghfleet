@@ -1,0 +1,75 @@
+# ghfleet server configuration
+# Copy to ~/.config/ghfleet/config.yaml or run `ghfleet init`.
+
+server:
+  listen: 127.0.0.1:8787
+  # Bind to 0.0.0.0:8787 for a LAN server and set api_token.
+  api_token: ""
+  state_dir: ~/.local/share/ghfleet
+  poll_interval: 2m
+  viewer: your-github-login
+  log_level: info
+
+approvals:
+  push: ask
+  comment: ask
+  merge: ask
+  fork_sync: auto
+  resolve_threads: bot   # never | bot | all
+
+limits:
+  max_jobs_per_hour: 6
+  max_fix_attempts_per_pr: 2
+  max_budget_usd_per_day: 10
+  job_timeout: 30m
+  approval_timeout: 24h
+
+repos:
+  - name: omlx
+    upstream: jundot/omlx
+    fork: alytaphoenix/omlx
+    default_branch: main
+    fetch_remote: origin      # origin is the upstream clone here
+    push_remote: fork         # push to your fork
+    runner_labels: []
+    auto_fork_sync: true
+    fork_sync_interval: 24h
+    merge_upstream: true
+    # auto_security: true    # owned repos only; requires osv-scanner on the runner
+    security_interval: 24h
+
+  - name: candle
+    upstream: huggingface/candle
+    fork: alytaphoenix/candle
+    default_branch: main
+    fetch_remote: upstream    # origin is your fork here
+    push_remote: origin
+    auto_fork_sync: true
+    merge_upstream: true
+
+  - name: ttt
+    upstream: eugenioenko/ttt
+    fork: alytaphoenix/ttt
+    default_branch: main
+    fetch_remote: origin
+    push_remote: fork
+    auto_fork_sync: true
+    merge_upstream: true
+
+  # A repo you own: no fork, push to origin.
+  - name: llama-switch
+    upstream: alytaphoenix/llama-switch
+    own: true
+    review_incoming: true
+    auto_security: true
+    default_branch: main
+    fetch_remote: origin
+    push_remote: origin
+
+  # A read-only clone: poll for visibility, never enqueue writes.
+  - name: mcp-osxphotos
+    upstream: marcomc/mcp-osxphotos
+    read_only: true
+    default_branch: main
+    fetch_remote: origin
+    push_remote: origin

@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": ["fix", "reply", "noop", "escalate"]
+    },
+    "summary": { "type": "string" },
+    "risk": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "needs_human": { "type": "boolean" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "error"]
+          },
+          "body": { "type": "string" }
+        },
+        "required": ["body"]
+      }
+    },
+    "reply": { "type": "string" },
+    "thread_replies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "thread_id": { "type": "string" },
+          "body": { "type": "string" },
+          "resolve": { "type": "boolean" }
+        },
+        "required": ["thread_id", "body"]
+      }
+    },
+    "verification": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["decision", "summary", "risk", "needs_human", "findings"]
+}

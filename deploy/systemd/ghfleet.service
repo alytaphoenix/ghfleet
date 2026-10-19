@@ -1,0 +1,22 @@
+[Unit]
+Description=ghfleet control plane
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ghfleet
+Group=ghfleet
+WorkingDirectory=/srv/ghfleet
+EnvironmentFile=/etc/ghfleet/env
+ExecStart=/usr/local/bin/ghfleet server --config /etc/ghfleet/config.yaml
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/ghfleet
+
+[Install]
+WantedBy=multi-user.target

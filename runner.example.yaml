@@ -1,0 +1,67 @@
+# ghfleet runner configuration
+# Copy to ~/.config/ghfleet/runner.yaml on each Mac/Linux runner.
+
+server_url: http://127.0.0.1:8787
+# token: "same value as server.api_token on a non-loopback server"
+id: mac-studio
+labels: [darwin, arm64, metal]
+work_root: ~/.local/share/ghfleet-runner
+concurrency: 1
+keep_worktrees: false
+approval_timeout: 24h
+
+security:
+  # Requires osv-scanner on PATH:
+  #   go install github.com/google/osv-scanner/v2/cmd/osv-scanner@latest
+  command: osv-scanner scan source --recursive --format json .
+  timeout: 10m
+
+agent:
+  engine: opencode
+  command: opencode
+  model: valhalla/valhalla-flash-next
+  fallback_engine: opencode
+  fallback_model: openrouter/deepseek/deepseek-v4.1-flash-1017
+  fallback_on_busy: true
+  max_budget_usd: 2
+  timeout: 30m
+  use_caffeinate: true
+  # extra_args: []
+  # Claude-only allowlists:
+  # allowed_tools: []
+  # disallowed_tools: []
+
+repos:
+  - name: omlx
+    path: ~/repos/omlx
+    checks:
+      - "uv run pytest -q"
+    verify_timeout: 15m
+    fetch_remote: origin      # upstream clone
+    push_remote: fork         # your fork
+    default_branch: main
+
+  - name: candle
+    path: ~/repos/candle
+    checks:
+      - "cargo check"
+    verify_timeout: 20m
+    fetch_remote: upstream    # origin is your fork
+    push_remote: origin
+    default_branch: main
+
+  - name: ttt
+    path: ~/repos/ttt
+    checks:
+      - "go test ./..."
+    fetch_remote: origin
+    push_remote: fork
+    default_branch: main
+
+  - name: llama-switch
+    path: ~/repos/llama-switch
+    checks:
+      - "go test ./..."
+    fetch_remote: origin
+    push_remote: origin
+    default_branch: main
