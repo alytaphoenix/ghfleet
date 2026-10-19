@@ -2,7 +2,7 @@
 
 Local-first GitHub PR control plane. One server owns GitHub state and approvals; one or more runners own checkouts, agents, tests, and pushes; the Mac/Linux client is a CLI or TUI.
 
-No GitHub Actions minutes, no webhook endpoint, no SaaS. It polls the GitHub API with your existing `gh` login and stores state in SQLite.
+No webhook endpoint, no SaaS, and no requirement to move your PR automation into GitHub Actions. It polls the GitHub API with your existing `gh` login, stores state in SQLite, and can optionally inspect and drive Actions workflows you already use.
 
 ```
 GitHub  <---poll--->  ghfleet server (control plane)
