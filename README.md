@@ -40,6 +40,14 @@ The server never gives an agent a GitHub token. The agent edits a worktree; the 
 
 Approval-first is the default. The agent can run and prepare a patch automatically; pushing and commenting require `ghfleet approve <job>` (or `a` in the TUI). Once a job type has a clean track record, set `approvals.push: auto` to let verified, low-risk results apply without a prompt. `fork-sync` is the exception when configured as `auto` because it is fast-forward-only.
 
+## Install
+
+```bash
+go install github.com/alytaphoenix/ghfleet/cmd/ghfleet@v0.2.0
+```
+
+Prebuilt macOS/Linux archives and checksums are on the [v0.2.0 release](https://github.com/alytaphoenix/ghfleet/releases/tag/v0.2.0).
+
 ## Quick start (single machine)
 
 ```bash
